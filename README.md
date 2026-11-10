@@ -1,14 +1,37 @@
-# Trust Ledger — Agent Run Review
+# LaunchStack
 
-React / Express / tRPC / Drizzle starter, adapted from the Sandbox web-db-user template.
+LaunchStack turns one SaaS brief into platform-aware launch scripts, destination links, audience angles, and a repeatable distribution workspace.
 
-- `pnpm dev`: development server; honors `PORT` (default 3000).
-- `pnpm build` / `pnpm start`: build and serve `dist/index.js` and `dist/public/`.
-- `pnpm db:migrate`: apply checked-in migrations. `pnpm db:push`: generate and apply new schema changes.
-- `pnpm check` / `pnpm test`: types and application tests.
+The current release is a browser-local MVP. It supports a catalog of 250 launch destinations, a free 10-platform kit, a 30-platform Launch plan, and a 50+ platform Scale plan. Plan selection is currently a local product-preview gate; connect server-side entitlements and payments before charging users.
 
-Start with the Webdev skill's default-template guide. Platform login, storage, payments and service contracts live in its shared references; read the relevant capability before extending its helper.
+## Local development
 
-`server/_core/publicConfig.ts` exposes only named public runtime values. Private keys stay server-side. The platform serves managed `/manus-storage/` assets; the application does not register a second proxy.
+```bash
+pnpm install
+pnpm dev
+```
 
-Platform configuration is readable and editable through `webdev.config`. Default settings are initial values, not enforced constraints. The agent may modify the files, commands and configuration or follow the flexible guide for another stack.
+The development server honors `PORT` and defaults to `3000`.
+
+```bash
+pnpm check
+pnpm test
+pnpm build
+pnpm start
+```
+
+Database helpers are available through `pnpm db:migrate` and `pnpm db:push` when durable campaigns and billing entitlements are implemented.
+
+## Product behavior
+
+A founder enters a product name, product idea, website link, audience, positioning line, and optional homepage screenshot. The workspace exposes the 250-row catalog with search, access labels, platform categories, and direct links. Unlocked platforms receive editable deterministic scripts. Founder, Marketing, and Developer angles adapt the emphasis of the script while the platform format remains visible.
+
+The MVP stores the campaign locally in the browser. Login, cross-device persistence, server-side plan enforcement, payments, and automated submission are intentionally not represented as complete features yet.
+
+## Project structure
+
+- `client/src/pages/Home.tsx`: landing page, pricing, campaign intake, plan gate, and workspace.
+- `client/src/data/platforms.ts`: catalog of platform names, URLs, and access classifications.
+- `client/src/index.css`: LaunchStack visual system and responsive layout.
+- `server/`: Manus OAuth, tRPC, database, and storage integration points.
+- `drizzle/`: current user schema and future campaign/entitlement migrations.
