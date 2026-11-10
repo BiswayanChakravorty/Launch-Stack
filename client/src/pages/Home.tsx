@@ -20,6 +20,8 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import { startLogin } from "@/const";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { platforms, type Platform } from "../data/platforms";
 
 type View = "home" | "workspace";
@@ -172,10 +174,18 @@ function AppHeader({
   view,
   setView,
   onMenu,
+  user,
+  authLoading,
+  onSignIn,
+  onLogout,
 }: {
   view: View;
   setView: (view: View) => void;
   onMenu: () => void;
+  user: { name: string | null; email: string | null } | null;
+  authLoading: boolean;
+  onSignIn: () => void;
+  onLogout: () => void;
 }) {
   return (
     <header className="launch-header">
@@ -215,16 +225,28 @@ function AppHeader({
         </button>
       </nav>
       <div className="launch-header-actions">
-        <button
-          className="ghost-action"
-          onClick={() =>
-            alert(
-              "Login is planned for the next release. Your campaign is currently saved locally in this browser."
-            )
-          }
-        >
-          Sign in
-        </button>
+        {user ? (
+          <div className="account-chip">
+            <span className="account-avatar">
+              {(user.name || user.email || "F").slice(0, 1).toUpperCase()}
+            </span>
+            <span className="account-copy">
+              <strong>{user.name || "Founder account"}</strong>
+              <small>{user.email || "Signed in"}</small>
+            </span>
+            <button className="ghost-action" onClick={onLogout}>
+              Sign out
+            </button>
+          </div>
+        ) : (
+          <button
+            className="ghost-action"
+            onClick={onSignIn}
+            disabled={authLoading}
+          >
+            {authLoading ? "Checking…" : "Sign in"}
+          </button>
+        )}
         <button className="dark-pill" onClick={() => setView("workspace")}>
           Open workspace <ArrowRight size={14} />
         </button>
@@ -942,6 +964,7 @@ function WorkspaceView({
 }
 
 export default function Home() {
+  const auth = useAuth();
   const [view, setView] = useState<View>("home");
   const [mobileNav, setMobileNav] = useState(false);
   const [campaign, setCampaignState] = useState<Campaign>(() => {
@@ -971,6 +994,20 @@ export default function Home() {
         view={view}
         setView={setViewAndScroll}
         onMenu={() => setMobileNav(open => !open)}
+        user={auth.user}
+        authLoading={auth.loading}
+        onSignIn={() => {
+          try {
+            startLogin();
+          } catch (error) {
+            alert(
+              error instanceof Error
+                ? error.message
+                : "Login is not configured yet."
+            );
+          }
+        }}
+        onLogout={() => void auth.logout()}
       />
       {mobileNav && (
         <div className="mobile-launch-nav">
@@ -989,6 +1026,25 @@ export default function Home() {
           >
             Pricing
           </button>
+          {auth.user ? (
+            <button onClick={() => void auth.logout()}>Sign out</button>
+          ) : (
+            <button
+              onClick={() => {
+                try {
+                  startLogin();
+                } catch (error) {
+                  alert(
+                    error instanceof Error
+                      ? error.message
+                      : "Login is not configured yet."
+                  );
+                }
+              }}
+            >
+              Sign in
+            </button>
+          )}
         </div>
       )}
       {view === "home" ? (

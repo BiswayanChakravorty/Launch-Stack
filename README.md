@@ -2,7 +2,7 @@
 
 LaunchStack turns one SaaS brief into platform-aware launch scripts, destination links, audience angles, and a repeatable distribution workspace.
 
-The current release is a browser-local MVP. It supports a catalog of 250 launch destinations, a free 10-platform kit, a 30-platform Launch plan, and a 50+ platform Scale plan. Plan selection is currently a local product-preview gate; connect server-side entitlements and payments before charging users.
+The current release supports Manus OAuth login with a database-backed user record, a catalog of 250 launch destinations, a free 10-platform kit, a 30-platform Launch plan, and a 50+ platform Scale plan. Campaign content remains browser-local in this release; connect server-side campaign persistence, entitlements, and payments before charging users.
 
 ## Local development
 
@@ -26,7 +26,7 @@ Database helpers are available through `pnpm db:migrate` and `pnpm db:push` when
 
 A founder enters a product name, product idea, website link, audience, positioning line, and optional homepage screenshot. The workspace exposes the 250-row catalog with search, access labels, platform categories, and direct links. Unlocked platforms receive editable deterministic scripts. Founder, Marketing, and Developer angles adapt the emphasis of the script while the platform format remains visible.
 
-The MVP stores the campaign locally in the browser. Login, cross-device persistence, server-side plan enforcement, payments, and automated submission are intentionally not represented as complete features yet.
+Manus OAuth creates and refreshes the application session using the `webdev_app_session` cookie. The callback upserts the authenticated user into the MySQL-compatible `users` table, and the header shows the signed-in account with a real sign-out action. Campaign content still stores locally in the browser; cross-device campaign persistence, server-side plan enforcement, payments, and automated submission remain future work.
 
 ## Project structure
 

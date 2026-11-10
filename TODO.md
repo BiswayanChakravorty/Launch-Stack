@@ -31,4 +31,11 @@
 - [x] The page includes a founder-oriented CTA, catalog quantity proof, workflow explanation, and a path from free launch to paid campaign.
 - [x] The README and package metadata use LaunchStack branding rather than starter Trust Ledger branding.
 - [x] The first release does not require a paid API or account backend.
-- [ ] Cross-device persistence and real login remain future work for the production release.
+- [ ] Cross-device campaign persistence remains future work for the production release.
+
+## Outcome 6 — Manus OAuth and database-backed user identity
+- [x] The header starts the real Manus OAuth flow instead of showing a planned-login alert.
+- [x] The existing OAuth callback creates or updates the authenticated user in the MySQL-compatible `users` table.
+- [x] The authenticated account name or email is shown in the header with a real sign-out action.
+- [x] The application session uses the existing `webdev_app_session` cookie and protected tRPC context.
+- [ ] Campaign rows are not yet persisted per user; the current campaign editor remains browser-local.
